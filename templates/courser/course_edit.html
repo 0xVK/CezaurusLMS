@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ com.name }} | {{ course.name }} редагування
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+  
+<ol class="breadcrumb navigate-panel">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+  <li><a href="{% url 'course' c_id=com.id cr_id=course.id %}">{{ course.name }}</a></li>
+  <li class="active">Редагування</li>
+</ol>
+
+<br>  
+<form action="{% url 'edit_course' c_id=com.id cr_id=course.id %}" method="post">
+ {% csrf_token %}
+ {{ form.as_p }}
+<button type="submit" class="btn btn-info">Зберегти</button>
+ </form>
+
+<br>
+ 
+<h4>Етапи:</h4> 
+{% for step in steps %}
+ <div class="step-edit-row row">
+  <div class="col-md-1">
+     <div class="sequence-control-block">
+      {% if step.sequence_number != 1 %}
+       <a href="{% url 'up_course_step' c_id=com.id cr_id=course.id s_id=step.id %}">
+        <span class="glyphicon glyphicon-chevron-up up-step" title="Перемістити вверх"></span>
+       </a>
+       {% else %}
+        <span class="glyphicon glyphicon-chevron-up up-step" title=""></span>
+       {% endif %}
+        <span class="seq-number">{{ step.sequence_number }}</span>
+       <a href="{% url 'down_course_step' c_id=com.id cr_id=course.id s_id=step.id %}">
+        <span class="glyphicon glyphicon-chevron-down up-step" title="Перемістити в низ"></span>
+       </a>
+     </div>
+   </div>
+   <div class="col-md-11">
+     <div class="edit-step-info-block">
+        <a href="{% url 'course_step' c_id=com.id cr_id=course.id s_id=step.id %}">
+        {{ step.name }} {% if step.description %}<br><i>({{ step.description }})</i>{% endif %}
+      </a><br>
+      <a class="btn btn-warning btn-sm" href="{% url 'edit_step' c_id=com.id cr_id=course.id s_id=step.id %}" role="button">
+      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Редагувати</a>
+      <div class="checkbox">
+      <label>
+        <input type="checkbox" {% if step.is_available %}checked{% endif %} readonly> Етап доступний
+      </label>
+  </div>
+      </div>
+   </div>
+ </div><hr> 
+{% empty %}
+<h5>Ви поки не створили жодних етапів. Для створення натисніть "Додати" в на <a href="{% url 'course' c_id=com.id cr_id=course.id %}"> цій сторінці</a></h5>
+{% endfor %}
+<hr>
+<button type="submit" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DelCourseModal">Видалити курс</button>
+<br>
+
+ 
+<!-- Modal -->
+<div class="modal fade" id="DelCourseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Ви певні?</h4>
+      </div>
+      <div class="modal-body">
+        Ви точно хочете видалити курс {{ course.name }}?
+      </div>
+      <div class="modal-footer">
+        <form action="{% url 'course_delete' c_id=com.id cr_id=course.id %}" method="post">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+         {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Так, я хочу його видалити!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 
+
+
+  
+{% endblock body %}

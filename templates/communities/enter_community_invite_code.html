@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Ввести інвайт код
+{% endblock %}
+  
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-8">
+    {% if messages %}
+      {% for message in messages %}
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+      {% endfor %}
+    {% endif %}
+   <h4>Введіть інвайт код:</h4>
+    <form action="{% url 'input_invite_code_community' %}" method="post">
+     {% csrf_token %}
+      <input type="text" placeholder="введіть інвайт код" name="code" required>
+      <button type="submit" class="btn btn-default">
+         Ок
+      </button>
+    </form>
+    
+  </div> 
+
+  <div class="col-md-4">
+   {% if user.profile.is_expanded %}
+    <a href="{% url 'create_community' %}">
+     <button type="button" class="btn btn-info btn-create-com">
+       <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+         Створити спільноту
+     </button>
+    </a>
+    {% endif %}
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation">
+        <a href="{% url 'my_communities' %}">
+          Мої спільноти
+            <span class="badge">{{ user_communities_count }}</span>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="{% url 'communities_invites' %}">
+          Запрошення
+          {% if user_communities_invites %}
+          <span class="badge">{{ user_communities_invites }}</span>
+          {% endif %}
+        </a>
+      </li>
+      <li role="presentation" class="active">
+        <a href="{% url 'input_invite_code_community' %}">
+          Ввести інвайт код
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock body %}

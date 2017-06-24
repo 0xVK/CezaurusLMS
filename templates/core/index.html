@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Вхід
+{% endblock %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/login-registration-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-4">
+  
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+    
+    <form method="post" action="{% url 'index' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="InputLoginForm">Логін</label>
+        <input name="username" type="text" class="form-control" id="InputLoginForm" placeholder="Логін" required>
+      </div>
+      <div class="form-group">
+        <label for="InputPassForm">Пароль</label>
+        <input type="password" class="form-control" name="password" id="InputPassForm" placeholder="Пароль" required>
+      </div>
+      <button type="submit" class="btn btn-info">Увійти</button>
+    </form>
+  </div>
+  <div class="col-md-8 text-center">
+    <h3>CezaurusLMS</h3>
+    <h5>Ласкаво просимо.  <br> Cezaurus - вільна, навчальна соціальна мережа для учнів, студентів та викладачів.<br><br>Тута мол крутий опис, або слайд шоу - презентація.. Так-так. Включіть уяву, і уявіть тут шикарне слайд шоууу!</h5>
+    
+    
+  </div>
+</div>
+{% endblock body %}

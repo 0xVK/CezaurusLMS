@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Мої друзі
+{% endblock %}
+  
+{% block head %}
+{% endblock head %}
+
+{% block javascript %}
+ <script src="{% static 'js/messages.js' %}"></script>
+{% endblock javascript %}
+
+{% block body %}
+<div class="row">
+  <div class="col-md-8">
+  <div class="friends-list">
+     {% for friend in friends_list %}
+       <div class="friend-user">
+        <a href="{% url 'profile' username=friend.username %}">
+         <img src="{{ friend.profile.get_picture }}" alt="" class="friend-photo">
+         <div class="friend-name">
+             {{ friend.get_full_name }}
+         </div>
+        </a>
+         <div class="friend-btns-block">
+           <form action="{% url 'send_message' %}" method="post" style="float: left; margin-right: 5px;" id="send-message-fm">
+             {% csrf_token %}
+             <input type="hidden" name="to_user" value="{{ friend.username }}">
+             <button type="button" class="btn btn-info btn-sm">
+             <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Повідомлення
+             </button>
+           </form>          
+           <form action="{% url 'remove_friend' %}" method="post">
+             {% csrf_token %}
+             <input type="hidden" name="to_user" value="{{ friend.username }}">
+             <button type="submit" class="btn btn-danger btn-sm">
+             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Видалити з друзів
+             </button>
+           </form>
+         </div>
+         <hr>
+       </div>
+     {% empty %}
+      <h5>Список друзів поки порожній</h5>
+     {% endfor %}
+   </div>
+  </div>
+  <div class="col-md-4">
+  <div class="friends-category">
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation" class="active">
+        <a href="{% url 'friends' %}">
+          Всі друзі
+            <span class="badge">{{ friends_count }}</span>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="{% url 'friends_requests' %}">
+          Заявки у друзі
+            {% if friends_requests_count %}
+              <span class="badge">{{ friends_requests_count }}</span>
+            {% endif %}
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="{% url 'friends_sent_requests' %}">
+          Вихідні запити
+            {% if friends_sent_requests_count %}
+              <span class="badge">{{ friends_sent_requests_count }}</span>
+            {% endif %}
+        </a>
+      </li>
+    </ul>
+  </div>
+  </div>
+</div>
+{% endblock body %}

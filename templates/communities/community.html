@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+{{ com.name }}
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+   <div class="com-info-block">
+     <h3>{{ com.name }}</h3>
+     <h5>{{ com.description }}</h5>
+     {% if is_admin %}
+     <a href="{% url 'community_settings' c_id=com.id %}">
+       <button type="button" class="btn btn-warning">
+         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+         Керування спільнотою
+       </button>
+     </a>
+     {% else %}
+      <form action="{% url 'community_leave' c_id=com.id %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="com_id" value="{{ com.id }}">
+       <button type="submit" class="btn btn-danger btn-sm btn-leave">
+         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+         Покинути спільноту
+       </button>
+       </form>
+     {% endif %}
+   </div>
+   
+   {% include 'communities/community-menu.html' with active='wall' %}
+   
+   <div class="com-wall">
+     
+      <form action="{% url 'add_com_wallpost' c_id=com.id %}" method="post">
+      {% csrf_token %}
+      <textarea class="form-control" rows="2" placeholder="Додати запис..." name="wall_post_text"></textarea>
+      <button type="submit" class="btn btn-primary send-btn-form">
+      <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Надіслати</button>
+      </form>
+      
+     <div class="com-wall-posts-block">
+        {% include 'core/wall_post.html' with post=post %}
+      </div>
+   </div>
+   
+   
+{% endblock body %}

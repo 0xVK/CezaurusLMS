@@ -1,0 +1,149 @@
+.profile-avatar{
+  margin: 0px 20px 10px 0px;
+  float: left;
+}
+.profile-avatar > img{
+  border-radius: 5px;
+  max-width: 200px;
+  max-height: 245px;
+}
+.profile-name{
+  font-size: 21px;
+}
+.profile-is-exp{
+  font-size: 14px;
+}
+.profile-online{
+  color: #939393;
+  float: right;
+  font-size: 13px;
+  margin-right: 5px;
+}
+.profile-status{
+  font-size: 14px;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.profile-wall-sections{
+  margin-top: 25px;
+  margin-bottom: 15px;
+/*  clear: both;*/
+}
+
+.profile-wallpost-form > form button.btn.btn-primary{
+  float: right;
+  margin-top: 5px;
+}
+.profile-wall-posts-block{
+  margin-top: 40px;
+}
+
+.profile-data-label{
+  color: #939393;
+  width: 220px;
+  display:inline-block;
+  font-size: 13px;
+}
+.profile-data-text{
+  display:inline-block;
+  font-size: 13px;
+  width: auto;
+}
+.profile-buttons{
+  padding-top: 5px;
+    clear: both;
+}
+.profile-awards{
+    margin-top: 30px;
+}
+.profile-award-item{
+    margin-right: 5px;
+}
+.profile-sent-friend-request{
+  color: #939393;
+  margin-bottom: 15px;
+}
+.btn-send{
+  width: 157px;
+}
+.btn-del-fr{
+  width: 40px;
+}
+.btn-prof-edit{
+  width: 200px;
+}
+.btn-add-fr{
+  width: 200px;
+}
+.none-in-community-profile{
+  color: #939393;
+}
+/*messages*/
+.message > a > img{
+  height: 80px;
+  max-width: 70px;
+  border-radius: 8px;
+  float: left;
+  margin-right: 10px;
+}
+.message-time{
+  color: #939393;
+  font-size: 13px;
+  display:inline;
+}
+.message-text{
+  margin-left: 75px;
+  min-height: 60px;
+  word-break: break-all;
+  display: block;
+  color: gray;
+}
+.message-text > a{
+ color:  #404040;
+}
+.message:hover{
+  background-color:  #F3F1F1;
+}
+.messages-block{
+  margin-top: 20px;
+}
+.message-unread{
+  background-color: #F8F7F7;
+  border-radius: 8px;
+}
+.gray-and-right{
+  color: #939393;
+  float: right;
+  font-size: 14px;
+  margin-right: 5px;
+}
+.message-btns{
+  margin:  15px 10px;
+}
+.btn-history{
+  float: right;
+}
+.btn-send-m{
+  margin: 10px;
+}
+.message-input{
+  width: 98%;
+  margin:  0 auto;
+}
+.messages-history > a > img{
+  height: 80px;
+  max-width: 70px;
+  border-radius: 8px;
+  float: left;
+  margin-right: 10px;
+}
+.loading-gif{
+  display: none;
+}
+.profile-status:hover{
+  cursor: pointer;
+}
+.status-input{
+  width: 380px;
+  display: inline;
+}

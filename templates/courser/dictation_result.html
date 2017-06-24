@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ step.name }}
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+  <script type="application/javascript" src="{% static 'js/dictation_results_spoiler.js' %}"></script>
+{% endblock head %}
+   
+{% block body %}
+ 
+<ol class="breadcrumb">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+  <li><a href="{% url 'course' c_id=com.id cr_id=course.id %}">{{ course.name }}</a></li>
+  <li class="active">{{ step.name }} (результат)</li>
+</ol>
+
+<button type="button" data-toggle="modal" data-target="#markdown_help" class="btn btn-link btn-sm pull-right"><span class="glyphicon glyphicon-question-sign"></span> Довідка</button>
+
+<div class="panel panel-success with-clear">
+  <div class="panel-heading">
+    <h3 class="panel-title">Інформація про розв'язок</h3>
+  </div>
+  <div class="panel-body">
+    <b>Автор:</b> 
+    <a href="{% url 'profile' username=solution.author.username %}">
+      {{ solution.author.get_full_name }}
+    </a><br>
+    <b>Час розв'язку:</b>
+     {{ solution.time }} <br>
+     <b>Кількість виправлень:</b>
+     {{ solution.errors_count }}
+  </div>
+</div>
+
+{% if is_show_results or is_course_admin  %}
+
+<div class="panel panel-success with-clear">
+  <div class="panel-heading dictation-name-checked folded">
+    <h3 class="panel-title"><a href="javascript:void(0);">{{ step.name }} (перевірений)</a></h3>
+  </div>
+  <div class="panel-body dictation-text-checked">
+    {{ solution.comparison_result|safe|linebreaks }}
+  </div>
+</div>
+<hr>
+
+
+
+<div class="panel panel-success with-clear">
+  <div class="panel-heading dictation-name folded">
+    <h3 class="panel-title"><a href="javascript:void(0);">{{ step.name }} (набраний)</a></h3>
+  </div>
+  <div class="panel-body dictation-text">
+    {{ solution.result|linebreaks }}
+  </div>
+</div>
+<hr>
+
+<div class="panel panel-success with-clear">
+  <div class="panel-heading dictation-name folded">
+    <h3 class="panel-title"><a href="javascript:void(0);">{{ step.name }} (оригінальний)</a></h3>
+  </div>
+  <div class="panel-body dictation-text">
+    {{ step.dictation.text|linebreaks }}
+  </div>
+</div>
+<hr>
+
+  
+{% else %}
+    <h3 class="text-center">Розв'яток прийнято, але зараз ми на жаль поки не можемо показати результат :(</h3>
+{% endif %}
+
+<!--  modal window -->
+  <div class="modal fade" id="markdown_help">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Довідка</h4>
+        </div>
+        <div class="modal-body">
+        <p>На цій сторінці знаходиться присланий учнем набраний диктант для перевірки.</p>
+        <p><i>Деяка довідкова інформація:</i></p>
+        <b>{{ step.name }} (перевірений)</b> - в цьому блоці знаходиться диктант, перевірений системою Cezaurus.
+        <p>
+          <span style="background:#F6CED8;">Цим</span> кольором позначений текст, який є зайвим.
+        </p>         
+        <p>  
+          <span style="background:#A9A9F5;">Цим</span> кольором позначений текст, який є пропущеним.   
+        </p>
+        <p>
+          <b>{{ step.name }} (набраний)</b> - в цьому блоці знаходиться текст, який прислав учень. <br>
+        </p>
+        
+        <p>
+          <b>{{ step.name }} (ориганільний)</b> - в цьому блоці знаходиться оригінальний текст диктанту.
+        </p>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock body %}

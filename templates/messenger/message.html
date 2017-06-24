@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Повідомлення
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/profile-style.css' %}">
+{% endblock head %}
+
+{% block javascript %}
+ <script src="{% static 'js/messages.js' %}"></script>
+   <script>
+    $('.btn-history').click(function(){
+       $('.loading-gif').show();       
+       $.ajax({  
+              url: "{% url 'show_messages_history' m_id=message.id %}",  
+              cache: false,  
+              success: function(html){  
+                $(".messages-history").html(html);
+                $('.loading-gif').hide();
+                }
+        });        
+    
+});
+  </script>
+{% endblock javascript %}
+
+{% block body %}
+
+
+{% if not is_sent %}
+<ol class="breadcrumb" style="margin-bottom: 15px;">
+  <li><a href="{% url 'my_messages' %}">Повідомлення</a></li>
+  <li class="active">Повідомлення від {{ message.from_user.get_full_name }}</li>
+</ol>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Повідомлення від <a href="{% url 'profile' username=message.from_user.username %}">
+    {{ message.from_user.get_full_name }}
+    </a>
+    <div class="gray-and-right">
+    {{ message.date }}
+    </div>
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{ message.text|linebreaks }}
+  </div>
+  <hr>
+  <form action="{% url 'answer_message' m_id=message.id %}" class="message-answer-fm" method="post">
+   {% csrf_token %}
+    <textarea class="form-control message-input" name="text" rows="3"></textarea>
+    <button type="submit" class="btn btn-info btn-sm btn-send-m"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Відправити</button>
+  </form>
+  
+  <div class="message-btns">
+    <button type="button" class="btn btn-default btn-sm btn-answer">
+    <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> Відповісти</button>
+    
+    <a href="{% url 'delete_message' m_id=message.id %}">
+    <button type="button" class="btn btn-danger btn-sm">
+    <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span> Видалити</button>
+    </a>
+    
+    <button type="button" class="btn btn-default btn-sm btn-history">
+    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Показати всю історію</button>
+  </div>
+</div>
+
+{% else %}
+
+<ol class="breadcrumb" style="margin-bottom: 15px;">
+  <li><a href="{% url 'my_messages' %}">Повідомлення</a></li>
+  <li class="active">Повідомлення до {{ message.to_user.get_full_name }}</li>
+</ol>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Повідомлення до <a href="{% url 'profile' username=message.to_user.username %}">
+    {{ message.to_user.get_full_name }}
+    </a>
+    <div class="gray-and-right">
+    {{ message.date }}
+    </div>
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{ message.text|linebreaks }}
+  </div>
+  <hr>
+  
+  <div class="message-btns">
+
+    <a href="{% url 'delete_message' m_id=message.id %}">
+    <button type="button" class="btn btn-danger btn-sm">
+    <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span> Видалити</button>
+    </a>
+    
+    <button type="button" class="btn btn-default btn-sm btn-history">
+    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Показати всю історію</button>
+  </div>
+</div>
+
+{% endif %}
+
+<div class="messages-history">
+<div class="loading-gif text-center">
+  <img src="{% static 'img/loading.gif' %}">
+</div>
+
+</div>
+
+{% endblock body %}

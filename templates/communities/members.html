@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+{{ com.name }} | учасники
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+   <div class="com-info-block">
+     <h3>{{ com.name }}</h3>
+     <h5>{{ com.description }}</h5>
+      {% if is_admin %}
+       <a href="{% url 'community_settings' c_id=com.id %}">
+         <button type="button" class="btn btn-warning">
+           <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+           Керування спільнотою
+         </button>
+       </a>
+       {% endif %}
+   </div>
+   
+   {% include 'communities/community-menu.html' with active='members' %}
+   
+   <div class="members-block">
+     {% if is_admin %}
+     <a href="{% url 'community_invite' c_id=com.id %}">
+     <button type="button" class="btn btn-primary btn-sm btn-invite-member">
+       <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span>
+         Запросити в спільноту
+     </button>
+     </a>
+     {% endif %}
+     
+     {% for member in members %}
+      <div class="com-member">
+        <a href="{% url 'profile' username=member.user.username %}">
+          <img src="{{ member.get_picture }}" alt="">
+          {{ member.user.get_full_name }}
+        </a>
+        {% if member.user in com.administrators.all %}(адміністратор){% endif %}
+      </div><br><hr class="with-clear">
+     {% empty %}
+      <br>
+      <h5>В спільноті немає учасників.</h5> 
+     {% endfor %}
+
+     
+   </div>   
+   
+   
+{% endblock body %}

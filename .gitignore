@@ -1,0 +1,7 @@
+*.pyc
+.idea
+.files/media/answers
+.files/media/dictations
+.files/media/profile_pictures
+__pycache__
+db.sqlite3

@@ -1,0 +1,36 @@
+.edit-form{
+  margin-bottom: 30px;
+}
+.settings-menu{
+  margin-top: 75px;
+}
+.field-error{
+  text-align: right;
+}
+.com-member{
+  
+}
+.com-member > a > img{
+  float: left;
+  max-height: 80px;
+  border-radius: 7px;
+  margin-right: 7px;
+  margin-bottom: 5px;
+}
+.with-clear{
+  clear: both;
+}
+.member-control-fm{
+  margin-top: 5px;
+}
+#usernameInput{
+  width: 235px;
+}
+.member-make-adm-fm, .member-uninvite-fm,
+.member-del-adm-fm,
+.member-cancel-inv-fm{
+  float: left;
+  margin-left: 8px;
+  margin-top: 8px;
+}
+

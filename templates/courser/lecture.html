@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ step.name }}
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+ 
+<ol class="breadcrumb" style="margin-bottom: 5px;">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+  <li><a href="{% url 'course' c_id=com.id cr_id=course.id %}">{{ course.name }}</a></li>
+  <li class="active">{{ step.name }}</li>
+</ol>
+
+{% if user == course.author %}
+<a class="btn btn-warning" href="{% url 'edit_step' c_id=com.id cr_id=course.id s_id=step.id %}" role="button" style="float:right;">
+Редагувати</a>
+{% endif %}
+
+<br><br>
+<div class="panel panel-warning with-clear">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{ step.name }}</h3>
+  </div>
+  <div class="panel-body">
+    <i> {{ step.description }}</i>
+    <hr>
+    {{ lecture.text|safe|linebreaks }}
+  </div>
+</div>
+    
+<!--
+<p class="bg-warning  with-clear">
+  <span class="course-title"> &nbsp;</span><br>
+  <i> {{ step.description }}</i>
+</p>
+-->
+
+
+  <hr>
+{% endblock body %}

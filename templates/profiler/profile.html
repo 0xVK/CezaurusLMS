@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ profile_user.first_name }} {{ profile_user.last_name }} 
+{% endblock %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/profile-style.css' %}">
+{% endblock head %}
+
+{% block javascript %}
+ <script src="{% static 'js/messages.js' %}"></script>
+ <script src="{% static 'js/profiler.js' %}"></script>
+{% endblock javascript %}
+
+{% block body %}
+   <div class="profile-info">
+    <div class="profile-avatar">
+      <img src="{{ profile_user.profile.get_picture }}">
+    </div>
+    <div class="profile-name">
+      {{ profile_user.first_name }} {{ profile_user.last_name }}
+        {% if profile_user.profile.is_expanded  %}
+          <span class="glyphicon glyphicon-ok profile-is-exp" aria-hidden="true"></span>
+        {% endif %}
+      <div class="profile-online">
+        {% if profile_user.profile.is_online  %}
+          online
+        {% endif %}
+      </div>
+    </div>
+    {% if is_user_profile %}
+    <div class="profile-status">
+        {% if profile_user.profile.status %}
+         {{ profile_user.profile.status }}
+        {% else %}
+          Змінити статус
+        {% endif %}
+    </div>
+    {% else %}
+        {% if profile_user.profile.status %}
+          {{ profile_user.profile.status }}
+        {% endif %}
+    {% endif %}
+    <hr>
+    <div class="profile-data">
+      {% if profile_user.profile.location %}
+      <div class="profile-data-label">Місто:</div>
+      <div class="profile-data-text">{{ profile_user.profile.location }}</div><br>
+      {% endif %}
+      {% if profile_user.profile.school %}
+      <div class="profile-data-label">Навчальний заклад:</div>
+      <div class="profile-data-text">{{ profile_user.profile.school }}</div><br>
+      {% endif %}
+      {% if profile_user.profile.form %}
+      <div class="profile-data-label">Клас:</div>
+      <div class="profile-data-text">{{ profile_user.profile.form }}</div>
+      {% endif %}
+    </div>
+    <div class="profile-awards">
+
+    </div>
+    
+    <div class="profile-buttons">
+     {% if is_user_profile %}
+      <a class="btn btn-default btn-prof-edit" href="{% url 'settings_profile' %}">
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Редагувати профіль
+      </a>
+     {% endif %}
+     
+     {% if is_friend %}
+      <form action="{% url 'send_message' %}" method="post" style="float: left; margin-right: 5px;">
+        {% csrf_token %}
+        <input type="hidden" name="to_user" value="{{ profile_user.username }}">
+        <button type="button" class="btn btn-info btn-sm btn-send" data-toggle="modal" data-target="#SendMessageModal">
+        <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Повідомлення
+        </button>
+      </form>  
+              
+      <form action="{% url 'remove_friend' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="to_user" value="{{ profile_user.username }}">
+        <button type="submit" class="btn btn-danger btn-sm btn-del-fr">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>      </button>
+      </form>
+     {% endif %}
+     
+     {% if not is_friend and not is_user_profile %}
+        {% if is_sent_request %}
+         <form action="{% url 'cancel_friend_request' %}" method="post">
+         {% csrf_token %}
+         <input type="hidden" name="to_user" value="{{ profile_user.username }}">
+          <div class="profile-sent-friend-request">Запит відправлено</div>
+        <button type="submit" class="btn btn-warning btn-add-fr">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Відмінити запит
+        </button>
+      </form>    
+
+    {% elif is_request %}
+      <div style="font-size:12px;">Користувач відправив Вам заявку</div>
+        <form action="{% url 'accept_friend_request' %}" style="float: left; margin-right: 5px;" method="post">
+             {% csrf_token %}
+             <input type="hidden" name="request_from_user" value="{{ profile_user.username }}">
+             <button type="submit" class="btn btn-success btn-sm">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Прийняти
+             </button>
+        </form>
+        <form action="{% url 'reject_friend_request' %}" method="post">
+             {% csrf_token %}
+             <input type="hidden" name="request_from_user" value="{{ profile_user.username }}">
+             <button type="submit" class="btn btn-danger btn-sm">
+             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Відхилити
+             </button>
+        </form>   
+    {% else %}
+      <form action="{% url 'send_friend_request' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="to_user" value="{{ profile_user.username }}">
+      <button type="submit" class="btn btn-success btn-add-fr">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Додати в друзі
+      </button>
+      </form>
+    {% endif %}
+     {% endif %}
+    </div>
+
+  </div>  
+  <div class="profile-wall-sections">
+    <ul class="nav nav-tabs nav-justified">
+      <li role="presentation" {% if active == 'W' %}class="active"{% endif %}>
+        <a href="{% url 'profile' username=profile_user.username %}">Стіна</a>
+      </li>
+<!--      <li role="presentation"><a href="#">Інформація</a></li>-->
+      <li role="presentation" {% if active == 'F' %}class="active"{% endif %}>
+        <a href="{% url 'profile_friends' username=profile_user.username %}">Друзі</a>
+      </li>
+      <li role="presentation" {% if active == 'C' %}class="active"{% endif %}><a href="{% url 'profile_communities' username=profile_user.username %}">Спільноти</a></li>
+      <li role="presentation" {% if active == 'A' %}class="active"{% endif %}><a href="{% url 'profile_awards' username=profile_user.username %}">Нагороди</a></li>
+    </ul>
+  </div>
+  
+{% if active == 'W' %}      
+  <div class="profile-wall">
+   <div class="profile-wallpost-form">
+      
+      {% if is_friend or is_user_profile %}
+      <form action="{% url 'add_wallpost' username=profile_user.username %}" method="post">
+       {% csrf_token %}
+        <textarea class="form-control" rows="2" placeholder="Додати запис..." name="wall_post_text"></textarea>
+        <button type="submit" class="btn btn-primary send-btn">
+         <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Надіслати</button>
+      </form>
+      {% endif %}
+    </div>
+    
+    <div class="profile-wall-posts-block">
+    <br>
+    {% include 'core/wall_post.html' with post=post %}
+    </div>
+  </div>
+ 
+{% elif active == 'F' %}
+ <div class="profile-friends">
+   {% for friend in friends %}
+      <div class="friend-user">
+        <a href="{% url 'profile' username=friend.username %}">
+         <img src="{{ friend.profile.get_picture }}" alt="" class="friend-photo">
+         <div class="friend-name">
+             {{ friend.get_full_name }}
+         </div>
+        </a>
+        <hr class="with-clear">
+       </div>
+       
+   {% empty %}
+   <h5>Список друзів порожній.</h5>
+   {% endfor %}
+ </div>
+
+
+{% elif active == 'C' %}
+ <div class="profile-communities">
+   {% for community in communities %}
+      {% if community in user.profile.communities.all %}
+       <a href="{% url 'community' c_id=community.id %}"><h4>{{ community.name }}</h4></a>
+      {% else %}
+       <a href="#" class="none-in-community-profile"><h4>{{ community.name }}</h4></a>
+      {% endif %}
+   {% empty %}
+   <h5>Список спільнот порожній.</h5>
+   {% endfor %}
+ </div>
+
+
+{% elif active == 'A' %}
+List of awards
+{% endif %}
+ 
+ <!-- Modal -->
+<div class="modal fade" id="SendMessageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Надіслати повідомлення</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'send_message' %}" method="post" id="send-message-fm">
+         {% csrf_token %}
+          <input type="hidden" name="to_username" value="{{ profile_user.username }}">
+          <textarea name="text" rows="3" class="form-control"></textarea>
+          <div style="float: right; margin: 5px 0;">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer with-clear">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+        <button type="submit" class="btn btn-primary" id="confirm-send-btn">Відправити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="display:none;">
+  <form action="" class="status-form form-inline">
+    <input type="text" class="form-control status-input">
+    <button type="button" class="btn btn-default btn-change-status">Ок</button>
+  </form>
+</div>
+  
+{% endblock body %}

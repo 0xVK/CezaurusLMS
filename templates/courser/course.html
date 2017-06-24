@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ com.name }} | {{ course.name }}
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+  
+<ol class="breadcrumb navigate-panel">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+  <li class="active">{{ course.name }}</li>
+</ol>
+  
+  {% if is_author %}
+    <a class="btn btn-warning edit-course-btn" href="{% url 'edit_course' c_id=com.id cr_id=course.id %}" role="button">
+      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Редагувати курс</a>
+  <div class="btn-group control-course-btns">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+    Додати <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a href="{% url 'create_lecture' c_id=com.id cr_id=course.id %}">Лекцію</a></li>
+      <li><a href="{% url 'create_dictation' c_id=com.id cr_id=course.id %}">Диктант</a></li>
+      <li><a href="{% url 'create_independent_work' c_id=com.id cr_id=course.id %}">Самостійну роботу</a></li>
+      <li><a href="#">Тестування</a></li>
+    </ul>
+  </div>
+  {% endif %}
+  
+  
+  <p class="bg-primary course-title with-clear"> &nbsp;{{ course.name }} </p>
+  
+  <div class="course-steps-list">
+    {% if course_steps %}
+      <ol type="1">
+        {% for step in course_steps %}
+           {% if not step.is_available %}
+            <h4>
+              <div class="no-available-step">
+                <li>
+               {{ step.name }} ({{ step.step_type }})
+                </li>
+              </div> 
+            </h4>
+            {% else %}
+            <h4>
+              <a href="{% url 'course_step' c_id=com.id cr_id=course.id s_id=step.id %}">
+              <li> 
+                 {{ step.name }} ({{ step.step_type }})
+              </li>
+              </a>
+            </h4>
+            {% endif %}
+          
+       {% endfor %}
+      </ol>
+      
+    {% else %}
+    
+    <h5>Курс поки пустий.</h5>
+    
+    {% endif %}
+  </div>
+  
+{% endblock body %}

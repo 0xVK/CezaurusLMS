@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Керування спільнотою
+{% endblock %}
+  
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/settings-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="settings-menu">
+     <div class="list-group">
+       <a href="{% url 'community_settings' c_id=com.id %}" class="list-group-item">Основна інформація</a>
+       <a href="{% url 'community_settings_members' c_id=com.id %}" class="list-group-item">Учасники</a>
+       <a href="{% url 'community_invite' c_id=com.id %}" class="list-group-item active">Надіслати запрошення</a>
+       <a href="{% url 'community_settings_invitation_code' c_id=com.id %}" class="list-group-item">Інвайт код</a>
+     </div>
+  </div>
+  </div>
+  <div class="col-md-8">
+    <div class="edit-form">
+    
+     <ol class="breadcrumb">
+      <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+      <li class="active">Запросити в спільноту</li>
+    </ol>  
+    
+    <h3>Надіслати запрошення в спільноту</h3>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+       <br>
+      <form action="{% url 'community_invite' c_id=com.id %}" method="post">
+        <div class="form-group">
+          <label for="usernameInput">Логін</label>
+          <input class="form-control" id="usernameInput" name="username" required="" type="text">
+        </div>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default">Надіслати запрошення</button>
+        <a href="{% url 'community_sent_invites' c_id=com.id %}">
+          <button type="button" class="btn btn-link">Надісланні запрошення</button>
+        </a>
+        <br>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Вхідні заявки в друзі
+{% endblock %}
+  
+{% block head %}
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-8">
+  <div class="friends-list">
+     {% for friend in friends_requests %}
+       <div class="friend-user">
+         <div class="friend-name">
+           <a href="{% url 'profile' username=friend.username %}">
+            <img src="{{ friend.profile.get_picture }}" alt="" class="friend-photo">
+             {{ friend.get_full_name }}
+           </a>
+         </div>
+         
+         <div class="friend-btns-block">
+          <form action="{% url 'accept_friend_request' %}" style="float: left; margin-right: 5px;" method="post">
+             {% csrf_token %}
+             <input type="hidden" name="request_from_user" value="{{ friend.username }}">
+             <button type="submit" class="btn btn-success btn-sm">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Прийняти заявку
+             </button>
+          </form>
+          <form action="{% url 'reject_friend_request' %}" method="post">
+             {% csrf_token %}
+             <input type="hidden" name="request_from_user" value="{{ friend.username }}">
+             <button type="submit" class="btn btn-danger btn-sm">
+             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Відхилити
+             </button>
+          </form>          
+         </div>
+         <hr>
+       </div>
+     {% empty %}
+     <h5>Немає вхідних заявок в друзі</h5>
+     {% endfor %}
+   </div>
+  </div>
+  <div class="col-md-4">
+  <div class="friends-category">
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation">
+        <a href="{% url 'friends' %}">
+          Всі друзі
+          <span class="badge">{{ friends_count }}</span>
+        </a>
+      </li>
+      <li role="presentation" class="active">
+        <a href="{% url 'friends_requests' %}">
+          Заявки у друзі 
+            {% if friends_requests_count %}
+              <span class="badge">{{ friends_requests_count }}</span>
+            {% endif %}
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="{% url 'friends_sent_requests' %}">
+        Вихідні запити
+          {% if friends_sent_requests_count %}
+            <span class="badge">{{ friends_sent_requests_count }}</span>
+          {% endif %}
+        </a>
+      </li>
+    </ul>
+  </div>
+  </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Всі спільноти
+{% endblock %}
+  
+{% block head %}
+{% endblock head %}
+   
+{% block body %}
+<h3>Список спільнот</h3>
+<div class="row">
+<div class="col-md-8">
+  <div class="all_com-list">
+    {% for c in communities %}
+    <div class="com-in-list">
+      <a href="#"><h4>{{ c.name }}</h4></a>
+      <h5>{{ c.description }}</h5>
+      <hr><br>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+  
+<div class="col-md-4">
+  <div class="all_com-category">
+    ...
+  </div>
+</div>
+</div>
+{% endblock body %}

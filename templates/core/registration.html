@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Реєстрація
+{% endblock %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/login-registration-style.css' %}">
+{% endblock head %}
+  
+{% block javascript %}
+  <script src="{% static 'js/signup-form-validation.js' %}"></script>
+{% endblock javascript %}
+   
+{% block body %}
+ <div class="reg-form-block">
+  <h4 class="text-center">Форма реєстрації</h4>
+    
+     {% for field in form %}
+      {% if field.errors %}
+      <div class="alert alert-dismissible alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ field.label }}
+        {{ field.errors }}
+      </div>
+      {% endif %}
+    {% endfor %}
+    
+  <form action="{% url 'signup' %}" method="post">
+   
+    <div class="form-group username_block">
+      <label for="UsernameInput" class="control-label">{{ form.username.label }}*</label>
+      <input type="text" class="form-control" id="UsernameInput" placeholder="{{ form.username.label }}" name="username">
+      <div class="UsernameInputinfo text-right">
+      </div>
+    </div>
+    
+    <div class="form-group firstname_block">
+      <label for="FirstnameInput" class="control-label">{{ form.first_name.label }}*</label>
+      <input type="text" class="form-control" id="FirstnameInput" placeholder="{{ form.first_name.label }}"
+      name="first_name">
+    </div>
+        
+    <div class="form-group lastname_block">
+      <label for="LastnameInput" class="control-label">{{ form.last_name.label }}*</label>
+      <input type="text" class="form-control" id="LastnameInput" placeholder="{{ form.last_name.label }}"
+      name="last_name">
+    </div>
+    
+    <div class="form-group email_block">
+      <label for="EmailInput" class="control-label">{{ form.email.label }}*</label>
+      <input type="email" class="form-control" id="EmailInput" placeholder="{{ form.email.label }}"
+      name="email">
+    </div>
+    
+    <div class="form-group">
+      <label for="SexInput">Стать*</label>
+      <select name="sex" id="SexInput" class="form-control">
+        <option value="M">Чоловік</option>
+        <option value="W">Жінка</option>
+      </select>
+      
+    </div>
+    <div class="form-group birth_block">
+      <label for="BdateInput">{{ form.birthday.label }}*</label>
+      <input type="text" class="form-control" id="BdateInput" placeholder="Наприклад, 20.10.1998" name="birthday">
+      
+    </div>
+    <hr>       
+    <div class="form-group pass1_block">
+      <label for="PassInput1" class="control-label">{{ form.password1.label }}*</label>
+      <input type="password" class="form-control" id="PassInput1" placeholder="Пароль (6-35 символів)" name="password1">
+    </div>  
+    <div class="form-group pass2_block">
+      <label for="PassInput2" class="control-label">{{ form.password2.label }}*</label>
+      <input type="password" class="form-control" id="PassInput2" placeholder="Пароль ще раз (6-35 символів)" name="password2">
+    </div>
+         
+    <hr>
+    <div class="form-group location_block">
+      <label for="LocationInput" class="control-label">{{ form.location.label }}*</label>
+      <input type="text" class="form-control" id="LocationInput" placeholder="{{ form.location.label }}" name="location">
+    </div>
+    
+    <div class="form-group school_block">
+      <label for="SchoolInput" class="control-label">{{ form.school.label }}</label>
+      <input type="text" class="form-control" id="SchoolInput" placeholder="{{ form.school.label }}" name="school">
+    </div>    
+    
+    <div class="form-group form_block">
+      <label for="FormInput" class="control-label">{{ form.form.label }}</label>
+      <input type="text" class="form-control" id="FormInput" placeholder="{{ form.form.label }}" name="form">
+    </div> 
+    
+    <hr>  
+    <h5>* - обов'язкові поля</h5>
+  <button type="submit" class="btn btn-success pull-right">
+    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Реєстрація
+  </button>    
+  {% csrf_token %}
+  </form>
+ </div>
+
+{% endblock body %}

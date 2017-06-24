@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block title %} 
+  Пошук
+{% endblock title %}
+  
+{% block head %}
+{% endblock head %}
+   
+{% block body %}
+  
+
+<h3>Пошук</h3>
+<hr>
+
+<div style="margin:100px 0;">
+<h4>Пошук по користувачах і постах.</h4>
+<form role="search" action="{% url 'search' %}" style="padding-top: 1em;">
+    <div class="input-group">
+      <input type="text" class="form-control input-lg" name="q" placeholder="Введіть запит">
+      <span class="input-group-btn">
+      <button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+        </div>
+</form>
+</div>
+  
+{% endblock body %}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+{{ com.name }} | курси
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+   <div class="com-info-block">
+     <h3>{{ com.name }}</h3>
+     <h5>{{ com.description }}</h5>
+      {% if is_admin %}
+       <a href="{% url 'community_settings' c_id=com.id %}">
+         <button type="button" class="btn btn-warning">
+           <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+           Керування спільнотою
+         </button>
+       </a>
+       {% endif %}
+   </div>
+   
+   {% include 'communities/community-menu.html' with active='courses' %}
+   {% if is_admin %}
+   <div class="courses-block">
+     <button type="button" class="btn btn-success btn-create-course btn-sm" data-toggle="modal" data-target="#CreateCourseModal">
+       <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
+         Додати курс
+     </button>
+   {% else %}
+   <br>
+   {% endif %}
+     
+  {% if courses %} 
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Назва</th>
+          <th>Опис</th>
+          <th>Кількість кроків</th>
+        </tr>
+      </thead>
+      <tbody>
+       {% for course in courses %}
+        <tr>
+          <td>
+            <a href="{% url 'course' c_id=com.id cr_id=course.id %}">
+              {{ course.name|truncatechars:28 }}
+            </a>
+          </td>
+          <td>
+           {% if course.description %}
+            {{ course.description|truncatechars:30 }}
+           {% else %}
+           -
+           {% endif %}
+          </td>
+          <td>
+            {{ course.get_steps_count }}
+          </td>
+        </tr>
+       {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+   <div class="no_courses text-center">
+     <img src="{% static 'img/no_courses.jpg' %}" class="no_courses">
+     <h4>Ніхто не поки створив курсів. <br> Створіть перший!</h4>
+     
+   </div>
+  {% endif %}
+     
+   </div>   
+
+<div class="modal fade" id="CreateCourseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Створити новий курс</h4>
+      </div>
+      
+      <form action="{% url 'courses' c_id=com.id %}" method="post">
+        <div class="modal-body">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+          <button type="submit" class="btn btn-primary">Створити</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>  
+   
+{% endblock body %}

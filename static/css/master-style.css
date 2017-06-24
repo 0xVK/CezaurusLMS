@@ -1,0 +1,122 @@
+body{
+  font-family: 'Open Sans', sans-serif;
+}
+hr{
+  margin-top:6px;
+}
+.container{
+  max-width: 755px;
+}
+.header-glyph{
+  font-size: 20px;
+  color: #dddddd;
+}
+.header-links{
+  padding: 15px 10px 15px 10px;
+}
+.header-photo{
+  max-width: 35px;
+  max-height: 35px;
+  border-radius: 6px;
+}
+.nav-links > li > a{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+ul.nav.navbar-nav.navbar-right li.dropdown a.dropdown-toggle.header-link-profile{
+  padding-top: 8px;
+  padding-right: 3px;
+  padding-left: 6px;
+}
+.footer{
+  margin-top: 20px;
+}
+.footer > ul{
+  clear: both;
+  list-style: none;
+  text-align: center;
+  padding-left: 0;
+}
+.footer > ul > li{
+  display: inline;
+  font-size: 13px;
+}
+.footer-name{
+  font-size: 13px;
+  color: #939393;
+  text-align: center;
+}
+
+/*==================*/
+
+
+.people-photo{
+  height: 80px;
+  border-radius: 6px;
+  float:left;
+  margin: 5px 15px 5px 0px;
+}
+.friend-photo{
+  height: 80px;
+  border-radius: 6px;
+  float:left;
+  margin: 5px 15px 5px 0px;
+}
+.friend-name{
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.friend-btns-block{
+  margin-bottom: 35px;
+}
+.friends-category{
+  font-size: 13px;
+}
+.friends-category > ul > li > a{
+  padding: 7px 12px 7px 12px;
+}
+.people-btns-block{
+  margin-bottom: 70px;
+}
+.remove-feed {
+  color: #bbbbbb; 
+  font-size: .8em; 
+  padding-top: .2em;
+  margin-right: 15px;
+  float: right;
+  cursor: pointer;
+}
+.with-clear{
+  clear: both;
+}
+
+/*post*/
+.post > a > img{
+  height: 80px;
+  max-width: 70px;
+  border-radius: 8px;
+  float: left;
+  margin-right: 10px;
+}
+.post-time{
+  color: #939393;
+  font-size: 13px;
+  display:inline;
+}
+.post-text{
+  margin-left: 75px;
+  min-height: 60px;
+  word-break: break-all;
+}
+.post-text-search{
+  margin-left: 75px;
+  min-height: 45px;
+  word-break: break-all;
+}
+.no-wallposts{
+  margin: 50px 0 40px 0;
+}
+/*endpost*/
+.loading-gif{
+
+}

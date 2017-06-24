@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+ {% load static %}
+  
+{% block title %} 
+  Налаштування | Змінити зображення
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/settings-style.css' %}">
+<link href="{% static 'css/jquery.Jcrop.min.css' %}" rel="stylesheet">
+<script src="{% static 'js/jquery.Jcrop.min.js' %}"></script>
+<script src="{% static 'js/upload_picture.js' %}"></script>
+{% endblock head %}
+
+{% block javascript %}
+
+{% endblock javascript %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="settings-menu">
+     <div class="list-group">
+       <a href="{% url 'settings_profile' %}" class="list-group-item">Профіль</a>
+       <a href="{% url 'settings_picture' %}" class="list-group-item active">Зображення</a>
+       <a href="{% url 'settings_password' %}" class="list-group-item">Змінити пароль</a>
+     </div>
+  </div>
+  </div>
+  <div class="col-md-8">
+   
+    <div class="edit-form">
+    
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+    
+    <h3>Змінити зображення</h3><br>
+      
+    <img src="{{ user.profile.get_picture }}" class="img-rounded"><br><br>
+    <form enctype="multipart/form-data" method="post" action="{% url 'upload_picture' %}" id="picture-upload-form">
+        {% csrf_token %}
+        <input type="file" name="picture" style="display: none">
+        <button type="button" class="btn btn-default" id="btn-upload-picture">Завантажити зображення</button>
+    </form>
+      
+    </div>
+    
+{% if uploaded_picture %}
+    <form method="post" action="{% url 'save_uploaded_picture' %}">
+        {% csrf_token %}
+        <div class="modal fade" id="modal-upload-picture">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Crop Picture</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="selected-picture">
+                    <p>Виділить потрібну область на зображенні, та натисніть <strong>Зберегти</strong></p>
+                    <img src="{% get_media_prefix %}profile_pictures/{{ user.username }}_tmp.jpg?_={% now 'U' %}" id="crop-picture">
+                    <input type="hidden" id="x" name="x" />
+                    <input type="hidden" id="y" name="y" />
+                    <input type="hidden" id="w" name="w" />
+                    <input type="hidden" id="h" name="h" />
+                  </div>
+                  <script type="text/javascript">
+                    $(function () {
+                      $("#modal-upload-picture").modal();
+                      window.history.pushState("", "", "/settings/picture/");
+                    });
+                  </script>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Відміна</button>
+                  <button type="submit" class="btn btn-primary">Зберегти</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </form>
+{% endif %}
+    
+  </div>
+</div>
+{% endblock body %}

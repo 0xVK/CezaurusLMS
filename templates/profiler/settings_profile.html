@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Налаштування профілю
+{% endblock %}
+  
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/settings-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="settings-menu">
+     <div class="list-group">
+       <a href="{% url 'settings_profile' %}" class="list-group-item active">Профіль</a>
+       <a href="{% url 'settings_picture' %}" class="list-group-item">Зображення</a>
+       <a href="{% url 'settings_password' %}" class="list-group-item">Змінити пароль</a>
+     </div>
+  </div>
+  </div>
+  <div class="col-md-8">
+    <div class="edit-form">
+    
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+    
+    <h3>Редагувати профіль</h3><br>
+      <form action="{% url 'settings_profile' %}" method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <br>
+        <button type="submit" class="btn btn-primary">Зберегти</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,14 @@
+  {% load staticfiles %}
+  
+  {% for m in m_history_list %}
+   <a href="{% url 'profile' username=m.from_user.username %}">
+    <img src="{{ m.from_user.profile.get_picture }}">
+     {{ m.from_user.get_full_name }}
+    </a>  
+    <div class="message-time"> ({{ m.date }})</div>
+    <div>
+     <div class="message-text {% if not m.is_read %}message-unread{% endif %}">
+      {{ m.text }}
+     </div>
+    </div><hr class="with-clear">
+  {% endfor %}

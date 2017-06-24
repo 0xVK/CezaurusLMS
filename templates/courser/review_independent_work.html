@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ step.name }} перегляд розв'язків
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+ 
+<ol class="breadcrumb" style="margin-bottom:5px;">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+  <li><a href="{% url 'course' c_id=com.id cr_id=course.id %}">{{ course.name }}</a></li>
+  <li><a href="{% url 'course_step' c_id=com.id cr_id=course.id s_id=step.id%}">{{ step.name }}</a></li>
+  <li class="active">Перегляд розв'язків</li>
+</ol>
+ 
+ {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible with-clear" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+<div class="review-iw-block">
+   <br>
+   <div class="panel panel-default">
+  <!-- Table -->
+  <table class="table">
+   {% for ans in answers %}
+    <tr {% if ans.status == 'C' %}class="success"{% endif %}
+        {% if ans.status == 'R' %}class="warning"{% endif %}>
+        <td>
+            <a href="{% url 'profile' username=ans.user.username %}" target="_blank">
+                {{ ans.user.get_full_name }}
+            </a>
+        </td>
+        <td>
+            {{ ans.date }}
+        </td>
+        <td>
+            <a href="{% url 'review_answer' a_id=ans.id %}">
+            <button type="button" class="btn btn-primary btn-xs">Переглянути</button>
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+    <h4 style="text-align:center;">Ніхто нічого не надсилав...</h4>
+    {% endfor %}
+  </table>
+</div>
+   
+</div>
+
+{% endblock body %}

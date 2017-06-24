@@ -1,0 +1,13 @@
+.reg-form-block{
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 95px;
+  margin-top: 35px;
+}
+.info_er{
+  color: red;
+}
+.info_ok{
+  color: green;
+}

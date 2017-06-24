@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Запрошення в спільноти
+{% endblock %}
+  
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-8">
+  {% if my_invites %}
+   <div class="my-communities-list">
+    <h4>Запрошення в спільноти</h4>
+     {% for inv in my_invites %}
+       <div class="my-com">
+        
+         <form action="{% url 'communities_invites' %}" class="com-invite-btns" method="post">
+          {% csrf_token %}
+           <input type="hidden" name="id_inv" value="{{ inv.id }}">
+           <button type="submit" class="btn btn-info btn-sm" name="r" value="accept">Прийняти</button>
+           <button type="submit" class="btn btn-danger btn-sm" name="r" value="reject">Відхилити</button>
+         </form>
+        <a href="#">
+         <h3>{{ inv.from_community.name }}</h3>
+        </a>
+         <h5>{{ inv.from_community.description }}</h5>
+         <hr>
+         
+       </div>
+     {% endfor %}
+   </div>
+   {% else %}
+     <h5>Немає вхідних запрошень.</h5>
+   {% endif %}
+  </div> 
+
+  <div class="col-md-4">
+   {% if user.profile.is_expanded %}
+    <a href="{% url 'create_community' %}">
+     <button type="button" class="btn btn-info btn-create-com">
+       <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+         Створити спільноту
+     </button>
+    </a>
+    {% endif %}
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation">
+        <a href="{% url 'my_communities' %}">
+          Мої спільноти
+            <span class="badge">{{ user_communities_count }}</span>
+        </a>
+      </li>
+      <li role="presentation" class="active">
+        <a href="{% url 'communities_invites' %}">
+          Запрошення
+          {% if my_invites|length %}
+          <span class="badge">{{ my_invites|length }}</span>
+          {% endif %}
+        </a>
+      </li>
+      <li role="presentation" >
+        <a href="{% url 'input_invite_code_community' %}">
+          Ввести інвайт код
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock body %}

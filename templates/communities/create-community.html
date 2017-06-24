@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Створити обговорення
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+
+ <ol class="breadcrumb">
+  <li><a href="{% url 'my_communities' %}">Мої спільноти</a></li>
+  <li class="active">Створити спільноту</li>
+</ol>  
+
+
+<form action="{% url 'create_community' %}" method="post">
+ {% csrf_token %}
+ 
+{{ form.as_p }}
+  
+  <button type="submit" class="btn btn-default">Створити спільноту</button>
+  
+</form>
+  
+{% endblock body %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Керування спільнотою
+{% endblock %}
+  
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/settings-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="settings-menu">
+     <div class="list-group">
+       <a href="{% url 'community_settings' c_id=com.id %}" class="list-group-item">Основна інформація</a>
+       <a href="{% url 'community_settings_members' c_id=com.id %}" class="list-group-item active">Учасники</a>
+       <a href="{% url 'community_invite' c_id=com.id %}" class="list-group-item">Надіслати запрошення</a>
+       <a href="{% url 'community_settings_invitation_code' c_id=com.id %}" class="list-group-item">Інвайт код</a>
+     </div>
+  </div>
+  </div>
+  <div class="col-md-8">
+    <div class="edit-form">
+    
+     <ol class="breadcrumb">
+      <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+      <li class="active">Учасники спільноти</li>
+    </ol>  
+    
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+    
+    <h3>Керування учасниками спільноти</h3><br>
+    
+    {% for member in members %}
+      <div class="com-member">
+        <a href="{% url 'profile' username=member.user.username %}">
+          <img src="{{ member.get_picture }}" alt="">
+          {{ member.user.get_full_name }}
+        </a>
+        {% if member.user in com.administrators.all %}(адміністратор){% endif %}
+        <div class="com-members-control">
+        
+         {% if user.profile != member and member.is_expanded and not member.user in com.administrators.all%}
+          <form action="{% url 'community_make_admin' c_id=com.id username=member.user.username %}" class="member-make-adm-fm" method="post">   
+            {% csrf_token %}
+            <button type="submit" class="btn btn-info btn-sm">
+             <span class="glyphicon glyphicon glyphicon-certificate" aria-hidden="true"></span>
+             Зробити адміністратором
+            </button>                   
+          </form>
+          {% endif %}
+          
+          {% if member.user in com.administrators.all and user != member.user %}
+            <form action="{% url 'community_remove_admin' c_id=com.id username=member.user.username %}" class="member-del-adm-fm" method="post">     
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning btn-sm">
+             <span class="glyphicon glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+             Розжалувати
+            </button>                   
+          </form>
+          {% else %}
+          
+          {% if not member.user == user %}
+          <form action="{% url 'community_remove_member' c_id=com.id username=member.user.username %}" class="member-uninvite-fm" method="post">
+           {% csrf_token %}
+            <button type="summit" class="btn btn-danger btn-sm">
+             <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+             Видалити з спільноти
+            </button>  
+          </form>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div><br><hr class="with-clear">
+    {% endfor %}
+    
+    </div>
+  </div>
+</div>
+{% endblock body %}

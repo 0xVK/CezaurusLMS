@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Керування спільнотою
+{% endblock %}
+  
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/settings-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="settings-menu">
+     <div class="list-group">
+       <a href="{% url 'community_settings' c_id=com.id %}" class="list-group-item">Основна інформація</a>
+       <a href="{% url 'community_settings_members' c_id=com.id %}" class="list-group-item">Учасники</a>
+       <a href="{% url 'community_invite' c_id=com.id %}" class="list-group-item">Надіслати запрошення</a>
+        <a href="{% url 'community_settings_invitation_code' c_id=com.id %}" class="list-group-item active">Інвайт код</a>
+     </div>
+  </div>
+  </div>
+  <div class="col-md-8">
+    <div class="edit-form">
+    
+     <ol class="breadcrumb">
+      <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+      <li class="active">Запросити в спільноту</li>
+    </ol>  
+    
+    <h3>Керування інвайт кодом</h3>
+     <p class="bg-info">
+       За допомогою інвайт коду користувачі зможуть вступити в спільноту без запрошення.
+       Для цього їм потрібно ввести даний код в спеціальне вікно, яке можна знайти на сторінці "Мої спільноти". <br> <b>Зверніть увагу, вступити в спільноту зможуть ВСІ користувачі, які знатимуть пароль. Тому, за необхідності видаліть пароль, або згенеруйте новий.</b>
+     </p>
+     
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+      <br>
+      
+      {% if code %}
+      <h4>Код запрошення в спільноту:</h4>
+      <input type="text" value="{{ code }}" style="float:left;" readonly>
+      <form method="post" action="{% url 'community_settings_invitation_code' c_id=com.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link" name="code_act" value="delete">Видалити код</button>
+      </form>
+      {% else %}
+      <form method="post" action="{% url 'community_settings_invitation_code' c_id=com.id %}">
+       {% csrf_token %}
+        <button type="submit" class="btn btn-default" name="code_act" value="create">Створити код</button>
+      </form>
+      {% endif %}
+      
+      
+    </div>
+  </div>
+</div>
+{% endblock body %}

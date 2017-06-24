@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Надіслані заявки в друзі
+{% endblock %}
+  
+{% block head %}
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-8">
+  <div class="friends-list">
+     {% for friend in friends_sent_requests %}
+       <div class="friend-user">
+         <div class="friend-name">
+           <a href="{% url 'profile' username=friend.username %}">
+            <img src="{{ friend.profile.get_picture }}" alt="" class="friend-photo">
+             {{ friend.get_full_name }}
+           </a>
+         </div>
+         
+         <div class="friend-btns-block">
+          <form action="{% url 'cancel_friend_request' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="to_user" value="{{ friend.username }}">
+           <button type="submit" class="btn btn-warning btn-sm">
+           <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+           Відхилити заявку
+           </button>
+           </form>
+         </div>
+         <hr>
+       </div>
+     {% empty %}
+      <h5>Немає вихідних запитів</h5>
+     {% endfor %}
+      
+
+   </div>
+  </div>
+  <div class="col-md-4">
+  <div class="friends-category">
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation">
+        <a href="{% url 'friends' %}">
+          Всі друзі
+          <span class="badge">{{ friends_count }}</span>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="{% url 'friends_requests' %}">
+          Заявки у друзі 
+            {% if friends_requests_count %}
+              <span class="badge">{{ friends_requests_count }}</span>
+            {% endif %}
+        </a>
+      </li>
+      <li role="presentation" class="active">
+        <a href="{% url 'friends_sent_requests' %}">
+        Вихідні запити
+          {% if friends_sent_requests_count %}
+            <span class="badge">{{ friends_sent_requests_count }}</span>
+          {% endif %}
+        </a>
+      </li>
+    </ul>
+  </div>
+  </div>
+</div>
+{% endblock body %}

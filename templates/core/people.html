@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Нові користувачі
+{% endblock %}
+  
+{% block head %}
+{% endblock head %}
+   
+{% block body %}
+<div class="row">
+  <div class="col-md-8">
+  <div class="friends-list">
+   {% if users %}
+     {% for u in users %}
+       <div class="friend-user">
+         <a href="{% url 'profile' username=u.username %}">
+         <img src="{{ u.profile.get_picture }}" alt="" class="people-photo">
+         <div class="friend-name">
+             {{ u.get_full_name }}
+         </div>
+           </a>
+         
+         <div class="people-btns-block">
+         </div>
+         <hr>
+       </div>
+     {% endfor %}
+    {% else %}
+      Поки немає друзів
+    {% endif %}
+   </div>
+  </div>
+  <div class="col-md-4">
+  <div class="friends-category">
+    ...
+  </div>
+  </div>
+</div>
+{% endblock body %}

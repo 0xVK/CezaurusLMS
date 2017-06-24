@@ -1,0 +1,156 @@
+.com-wall{
+  padding-top: 30px;
+}
+.com-info-block{
+  margin-bottom: 25px;
+}
+.com-info-block > a{
+  float: right;
+  margin-bottom: 15px;
+}
+.com-wall-posts-block{
+  margin-top: 50px;
+}
+.com-no-wallposts{
+  margin: 50px 0 40px 0;
+}
+.send-btn-form
+{
+  margin-top: 5px;
+  float: right;
+}
+.btn-create-topic{
+  float: right;
+  margin: 20px 0 20px 0;
+}
+.topic-title{
+  padding: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  min-height: 40px;
+  margin-top: 10px;
+}
+
+.topic-user-photo{
+  max-height: 120px;
+  border-radius: 5px;
+}
+
+.no_topics{
+  clear: both;
+  margin-bottom: 20px;
+}
+.btn-create-com{
+  margin-bottom: 20px;
+  
+}
+.com-menu{
+  clear: both;
+}
+.com-invite-btns{
+  float: right;
+}
+.btn-leave{
+  float: right;
+  margin-bottom: 15px;
+}
+.btn-invite-member{
+  float: right;
+  margin-top: 15px;
+}
+.com-member{
+  margin-top: 15px;
+  clear: both;
+}
+.com-member > a > img{
+  float: left;
+  max-height: 85px;
+  border-radius: 7px;
+  margin-right: 7px;
+  margin-bottom: 5px;
+}
+.with-clear{
+  clear: both;
+}
+.disc-publ-time{
+  text-align: right;
+  font-style: italic;
+  color: #939393;
+}
+.btn-disc-edit{
+  float: right;
+  margin: 0 6px 0 0;
+}
+.no-margin{
+  margin-bottom: 0px;
+}
+.disc-text{
+  min-height: 120px;
+}
+
+.btn-create-course{
+  float: right;
+  margin: 20px 0 20px 0;
+}
+.no_courses{
+  clear: both;
+  margin-bottom: 20px;
+}
+.course-title{
+  font-size: 21px;
+}
+.course-steps-list > ol > a{
+  font-style: italic;
+}
+.control-course-btns{
+  margin-bottom: 15px;
+  float: right;
+}
+.control-course-btns > button{
+  margin-right: 7px;
+}
+.navigate-panel{
+  margin-bottom: 10px;
+}
+.file-block{
+  margin-bottom: 35px;
+}
+.no-available-step{
+  color: gray;
+}
+.go-dict-btn{
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.disc-text{
+  word-break: break-all;
+}
+.edit-course-btn{
+  float: right;
+  margin-right: 5px;
+}
+.write-dictation-fm{
+  width: 100%;
+  margin-bottom: 30px;
+}
+.audio-player{
+  width: 100%;
+  margin: 20px 0;
+}
+
+.typed-dictation-name:hover{
+  cursor: pointer;
+}
+.up-step, .down-step {
+  font-size: 2em;
+  color: #ddd;
+}
+.up-step:hover, .down-step:hover {
+  cursor: pointer;
+  color: #428bca;
+}
+
+.sequence-control-block{
+  text-align: center;
+}

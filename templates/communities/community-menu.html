@@ -1,0 +1,8 @@
+   <div class="com-menu">    
+     <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" class="{% if active == 'wall' %}active{% endif %}"><a href="{% url 'community' c_id=com.id %}">Стіна</a></li>
+        <li role="presentation" class="{% if active == 'courses' %}active{% endif %}"><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+        <li role="presentation" class="{% if active == 'discussions' %}active{% endif %}"><a href="{% url 'discussions' c_id=com.id %}">Обговорення</a></li>
+        <li role="presentation" class="{% if active == 'members' %}active{% endif %}"><a href="{% url 'members' c_id=com.id %}">Учасники</a></li>
+     </ul>
+   </div>

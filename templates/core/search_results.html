@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block title %} 
+  Пошук
+{% endblock title %}
+  
+{% block head %}
+{% endblock head %}
+   
+{% block body %}
+  
+<div class="row">
+  <div class="col-md-4">
+      <h3>Пошук</h3>
+      
+    <div class="list-group">
+      <a href="{% url 'search' %}?q={{ querystring }}&type=feed" class="list-group-item{% if active == 'feed' %} active{% endif %}">
+        <span>Новини</span>
+        <span class="badge">{{ count.feed }}</span>
+      </a>
+      <a href="{% url 'search' %}?q={{ querystring }}&type=users" class="list-group-item{% if active == 'users' %} active{% endif %}">
+        <span>Люди</span>
+        <span class="badge">{{ count.users }}</span>
+      </a>
+    </div>
+    
+  </div>
+  
+  <div class="col-md-8">
+    <form role="search" action="{% url 'search' %}">
+        <input type="hidden" name="type" value="{{ active }}">
+          <div class="input-group">
+        <input type="text" class="form-control" name="q" placeholder="Пошук по людях і постах." value="{{ querystring }}">
+        <span class="input-group-btn">
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+        </div>
+  </form>
+  <hr>
+  
+  {% if not results %}
+  <h4>На жаль пошук не дав результатів :(</h4>
+  {% else %}
+  
+  {% if active == 'feed' %}
+   
+    {% for post in results %}
+     <div class="post">
+      <a href="{% url 'profile' username=post.from_user.username %}">
+        <img src="{{ post.from_user.profile.get_picture }}">
+         {{ post.from_user.get_full_name }}
+       </a>
+       <div class="post-time">{{ post.publication_date }}
+       <br>(на стіні у <a href="{% url 'profile' username=post.to_user.username %}">{{ post.to_user.get_full_name }}</a>)
+       </div>
+       <br>
+       <div class="post-text-search">
+          {{ post.text|linebreaks }}
+       </div><hr class="with-clear">
+    </div>
+{% endfor %}
+    
+  {% elif active == 'users'%}
+   {% for u in results %}
+    <div>
+      <a href="{% url 'profile' username=u.username %}">
+         <img src="{{ u.profile.get_picture }}" class="friend-photo">
+             {{ u.get_full_name }}
+        </a>
+        <hr class="with-clear">
+    </div>
+   {% endfor %}
+  {% endif %}
+{% endif %}
+</div>
+ 
+</div>
+{% endblock body %}

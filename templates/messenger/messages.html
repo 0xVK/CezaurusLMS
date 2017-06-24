@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Повідомлення
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/profile-style.css' %}">
+  
+{% endblock head %}
+   
+{% block body %}
+
+ {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible with-clear" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="{% url 'my_messages' %}">Вхідні</a></li>
+  <li role="presentation"><a href="/messages/?show=outbox">Вихідні</a></li>
+</ul>
+
+<div class="messages-block">
+ 
+  {% for m in messages_list %}
+  <div class="message {% if not m.is_read %}message-unread{% endif %}">
+   
+    <a href="{% url 'profile' username=m.from_user.username %}">
+    <img src="{{ m.from_user.profile.get_picture }}">
+     {{ m.from_user.get_full_name }}
+    </a>  
+    <div class="message-time"> ({{ m.date }})</div>
+    <div>
+     <a href="{{ m.get_absolute_url }}" class="message-text">
+      {{ m.text }}
+     </a>
+    </div><hr class="with-clear">
+    
+  </div>
+  {% empty %}
+  <h4>Повідомлень поки немає.</h4>
+  {% endfor %}
+</div>
+
+{% endblock body %}

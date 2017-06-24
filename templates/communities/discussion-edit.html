@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Створити обговорення
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+
+ <ol class="breadcrumb">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'discussions' c_id=com.id %}">Обговорення</a></li>
+  <li class="active">Редагувати обговорення</li>
+</ol>  
+
+<form action="{% url 'discussion_edit' c_id=com.id d_id=discussion.id %}" method="post">
+ {% csrf_token %}
+ {{ form.as_p }}
+  <button type="submit" class="btn btn-default">Зберегти</button>
+  <a href="{% url 'discussion_remove' c_id=com.id d_id=discussion.id %}">
+    <button type="button" class="btn btn-link">Видалити обговорення</button>
+  </a>
+</form>
+<br>
+{% endblock body %}

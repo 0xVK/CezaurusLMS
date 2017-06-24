@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ step.name }} перегляд розв'язків
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+ 
+<ol class="breadcrumb" style="margin-bottom:5px;">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+  <li><a href="{% url 'course' c_id=com.id cr_id=course.id %}">{{ course.name }}</a></li>
+  <li><a href="{% url 'course_step' c_id=com.id cr_id=course.id s_id=step.id%}">{{ step.name }}</a></li>
+  <li><a href="{% url 'review_independent_work' c_id=com.id cr_id=course.id s_id=step.id%}">Розв'язки</a></li>
+  <li class="active">{{ answer.user.get_full_name }}</li>
+</ol>
+<br>
+ {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible with-clear" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Розв'язок</h3>
+  </div>
+  <div class="panel-body">
+    <b>Автор:</b> <a href="{% url 'profile' username=answer.user.username %}" target="_blank"> {{ answer.user.get_full_name }} </a><br>
+    <b>Час:</b> {{ answer.date }} <br>
+    {% if answer.comment %}
+    <b>Ваш коментар:</b> {{ answer.comment }} <br>
+    {% endif %} <br>
+    <b>Файл:</b> <a href="{{ answer.file.url }}">завантажити</a><br>
+  </div>
+     
+      <form method="post">
+         {% csrf_token %}
+          <div class="form-group">
+            <input type="text" class="form-control" name="comment-rev" placeholder="Можете написати коментар або зауваження (не обов'язково)" maxlength="450">
+          </div>
+          
+      <div class="btn-group btn-group-justified" role="group" aria-label="...">
+          <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-success" name="rez-btn" value="sub">Зарахувати</button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-warning" name="rez-btn" value="rew">Відправити на доопрацювання</button>
+          </div>
+      </div>    
+    
+      </form>
+<br>
+</div>
+
+{% endblock body %}

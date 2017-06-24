@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ step.name }} | написання
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/community-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'community' c_id=com.id %}">{{ com.name }}</a></li>
+  <li><a href="{% url 'courses' c_id=com.id %}">Курси</a></li>
+  <li><a href="{% url 'course' c_id=com.id cr_id=course.id %}">{{ course.name }}</a></li>
+  <li class="active">{{ step.name }}</li>
+</ol>
+
+  
+<p class="bg-success  with-clear">
+  <span class="course-title"> &nbsp;{{ step.name }} </span><br>
+</p>
+
+<audio src="{{ dictation.audio.url }}" controls preload
+class="audio-player"></audio>
+
+<form action="{% url 'check_dictation' c_id=com.id cr_id=course.id s_id=step.id %}" method="post">
+ {% csrf_token %}
+  <textarea name="text" rows="30" class="write-dictation-fm" required></textarea>
+  <button type="submit" class="btn btn-info btn-block" value="Готовий!">
+    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+    Готово!
+  </button>
+</form>
+
+  <hr>
+{% endblock body %}
