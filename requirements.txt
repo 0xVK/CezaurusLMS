@@ -1,4 +1,4 @@
 setuptools
-django==1.11
+django==3.1.5
 Pillow
 
