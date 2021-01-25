@@ -13,8 +13,8 @@ class Course(models.Model):
 
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=80, null=True, blank=True)
-    community = models.ForeignKey(Community, null=True, blank=True)
-    author = models.ForeignKey(User)
+    community = models.ForeignKey(Community, null=True, blank=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
@@ -89,7 +89,7 @@ class Lecture(models.Model):
 
 class IndependentWork(models. Model):
 
-    course_step = models.OneToOneField(CourseStep)
+    course_step = models.OneToOneField(CourseStep, on_delete=models.CASCADE)
     text = models.TextField(max_length=15000)
 
     def __str__(self):
@@ -114,8 +114,8 @@ class AnswerFile(models.Model):
         (WAIT, 'Очікує перевірки'),
     )
 
-    independent_work = models.ForeignKey(IndependentWork)
-    user = models.ForeignKey(User)
+    independent_work = models.ForeignKey(IndependentWork, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     file = models.FileField(upload_to='answers')
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_TYPES, default=WAIT, max_length=3)
@@ -137,7 +137,7 @@ class AnswerFile(models.Model):
 class Dictation(models.Model):
 
     text = models.TextField(max_length=15000)
-    course_step = models.OneToOneField(CourseStep)
+    course_step = models.OneToOneField(CourseStep, on_delete=models.CASCADE)
     audio = models.FileField(upload_to='dictations', null=True, blank=True)
     show_results = models.BooleanField(default=False)
 
@@ -156,8 +156,8 @@ class Dictation(models.Model):
 
 class DictationSolution(models.Model):
 
-    dictation = models.ForeignKey(Dictation)
-    author = models.ForeignKey(User)
+    dictation = models.ForeignKey(Dictation, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     result = models.TextField(max_length=15000)
     comparison_result = models.TextField(max_length=15000)
     time = models.DateTimeField(auto_now_add=True)

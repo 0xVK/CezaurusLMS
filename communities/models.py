@@ -64,7 +64,7 @@ class Community(models.Model):
 
 
 class CommunityInvite(models.Model):
-    to_user = models.ForeignKey(User)
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE)
     from_community = models.ForeignKey(Community, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -80,7 +80,7 @@ class CommunityInvite(models.Model):
 
 class CommunityWallPost(models.Model):
     to_community = models.ForeignKey(Community, related_name='get_wallposts', on_delete=models.CASCADE)
-    from_user = models.ForeignKey(User, related_name='+')
+    from_user = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE)
     text = models.TextField(max_length=1000)
     publication_date = models.DateTimeField(auto_now_add=True)
 
@@ -90,7 +90,7 @@ class CommunityWallPost(models.Model):
 
 class Discussion(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name='community_topics')
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=80)
     text = models.TextField(max_length=2500)
     publication_time = models.DateTimeField(auto_now_add=True)
@@ -119,7 +119,7 @@ class Discussion(models.Model):
 
 class DiscussionComment(models.Model):
     to_discussion = models.ForeignKey(Discussion, related_name='+', on_delete=models.CASCADE)
-    from_user = models.ForeignKey(User, related_name='+')
+    from_user = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE)
     text = models.TextField(max_length=1000)
     publication_date = models.DateTimeField(auto_now_add=True)
 

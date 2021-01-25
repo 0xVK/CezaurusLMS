@@ -14,8 +14,8 @@ class MessageManager(models.Manager):
 
 class Message(models.Model):
 
-    to_user = models.ForeignKey(User, related_name='+')
-    from_user = models.ForeignKey(User, related_name='+')
+    to_user = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE)
     text = models.TextField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)

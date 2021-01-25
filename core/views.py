@@ -35,14 +35,14 @@ def index(request):
 
     if request.method == 'GET':
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             username = request.user.username
 
             return redirect(reverse('profile', args=[username]))
 
         else:
 
-            return render(request, 'core/index.html')
+            return render(request, 'core/login.html')
 
 
 def signup(request):

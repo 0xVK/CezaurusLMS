@@ -58,8 +58,8 @@ class Profile(models.Model):
 
 # ========================================================================================== #
 class ProfileWallPost(models.Model):
-    to_user = models.ForeignKey(User, related_name='get_wall_posts')
-    from_user = models.ForeignKey(User, related_name='get_to_others_wall_posts')
+    to_user = models.ForeignKey(User, related_name='get_wall_posts', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name='get_to_others_wall_posts', on_delete=models.CASCADE)
     text = models.TextField()
     publication_date = models.DateTimeField(auto_now_add=True)
 
@@ -143,8 +143,8 @@ class FriendshipManager(models.Manager):
 
 class Friendship(models.Model):
 
-    to_user = models.ForeignKey(User, related_name='+')
-    from_user = models.ForeignKey(User, related_name='+')
+    to_user = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE)
 
     objects = FriendshipManager()
 
@@ -163,8 +163,8 @@ class Friendship(models.Model):
 # ========================================================================================== #
 class FriendshipRequest(models.Model):
 
-    to_user = models.ForeignKey(User, related_name='friendship_requests_received')
-    from_user = models.ForeignKey(User, related_name='friendship_requests_sent')
+    to_user = models.ForeignKey(User, related_name='friendship_requests_received', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name='friendship_requests_sent', on_delete=models.CASCADE)
 
     def accept(self):
 
