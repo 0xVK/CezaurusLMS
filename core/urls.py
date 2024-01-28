@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import include, re_path as url
 from core.views import people, index, signup, username_validate, search
 from django.contrib.auth import views as auth_views
 from core.views import communities

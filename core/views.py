@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy as _
 from core.forms import SignUpForm
 from django.http import HttpResponse, JsonResponse
 from django.core.exceptions import ValidationError

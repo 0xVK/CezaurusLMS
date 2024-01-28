@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import include, re_path as url
 import messenger.views as mess_views
 
 urlpatterns = [

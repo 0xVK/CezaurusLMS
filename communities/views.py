@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from communities.forms import *
 from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy as _
 
 
 @login_required()
