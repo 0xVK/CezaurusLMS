@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import include, re_path as url
 from profiler.views import *
 from messenger.views import *
 

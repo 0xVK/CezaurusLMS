@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from profiler.models import ProfileWallPost, Friendship, FriendshipRequest
 from profiler.forms import ProfileForm, ChangePasswordForm
 from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import update_session_auth_hash
 from PIL import Image
 from django.conf import settings as django_settings
